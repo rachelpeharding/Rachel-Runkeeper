@@ -154,33 +154,11 @@
         <input type="submit" value="Save Run"/>
     </form> 
     <script>
-
-        // var runs = [
-        //     {
-        //         'date': '17/06/2020',
-        //         'distance': '5km',
-        //         'duration': '40:00',
-        //         'preSugar': 8.6,
-        //         'postSugar': 6.2,
-        //         'carbs': '15g'
-        //     },
-        //     {
-        //         'date': '27/06/2020',
-        //         'distance': '3.5km',
-        //         'duration': '22:30',
-        //         'preSugar': 10.2,
-        //         'postSugar': 5.5,
-        //         'carbs': '0g'
-        //     },
-        //     {
-        //         'date': '04/07/2020',
-        //         'distance': '4km',
-        //         'duration': '29:00',
-        //         'preSugar': 7.2,
-        //         'postSugar': 5.4,
-        //         'carbs': '12g'
-        //     }
-        // ];
+        function uuidv4() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
 
         var runs = JSON.parse(window.localStorage.getItem('runs')) || [];
 
@@ -195,6 +173,9 @@
             // Turn it into a "run"
             run.preSugar = parseFloat(run.preSugar);
             run.postSugar = parseFloat(run.postSugar);
+
+            // Give it a plausibly unique id
+            run.id = uuidv4();
 
             // persist the rundata
             runs.push(run);
