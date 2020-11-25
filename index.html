@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="A place to track how running affects blood sugar levels">
-
+    <meta name="robots" content="noindex"/>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
     <title>Rachel's Runkeeper</title>
@@ -155,32 +155,34 @@
     </form> 
     <script>
 
-        var runs = [
-            {
-                'date': '17/06/2020',
-                'distance': '5km',
-                'duration': '40:00',
-                'preSugar': 8.6,
-                'postSugar': 6.2,
-                'carbs': '15g'
-            },
-            {
-                'date': '27/06/2020',
-                'distance': '3.5km',
-                'duration': '22:30',
-                'preSugar': 10.2,
-                'postSugar': 5.5,
-                'carbs': '0g'
-            },
-            {
-                'date': '04/07/2020',
-                'distance': '4km',
-                'duration': '29:00',
-                'preSugar': 7.2,
-                'postSugar': 5.4,
-                'carbs': '12g'
-            }
-        ];
+        // var runs = [
+        //     {
+        //         'date': '17/06/2020',
+        //         'distance': '5km',
+        //         'duration': '40:00',
+        //         'preSugar': 8.6,
+        //         'postSugar': 6.2,
+        //         'carbs': '15g'
+        //     },
+        //     {
+        //         'date': '27/06/2020',
+        //         'distance': '3.5km',
+        //         'duration': '22:30',
+        //         'preSugar': 10.2,
+        //         'postSugar': 5.5,
+        //         'carbs': '0g'
+        //     },
+        //     {
+        //         'date': '04/07/2020',
+        //         'distance': '4km',
+        //         'duration': '29:00',
+        //         'preSugar': 7.2,
+        //         'postSugar': 5.4,
+        //         'carbs': '12g'
+        //     }
+        // ];
+
+        var runs = JSON.parse(window.localStorage.getItem('runs')) || [];
 
         function saveForm(event) {
             // Stop the browser doing the normal thing!
@@ -194,12 +196,17 @@
             run.preSugar = parseFloat(run.preSugar);
             run.postSugar = parseFloat(run.postSugar);
 
+            // persist the rundata
+            runs.push(run);
+            window.localStorage.setItem('runs', JSON.stringify(runs));
+
             // pass it to "addRun"
-            addRun(run); 
+            displayRun(run); 
             return false;
         }
 
-        function addRun(run) {
+
+        function displayRun(run) {
 
             // Create our new table row and assign it to the variable "row"
             var row = document.createElement('tr');
@@ -238,7 +245,7 @@
             tBody.appendChild(row);
         }
 
-        runs.forEach(addRun);
+        runs.forEach(displayRun);
     </script>
 
     
